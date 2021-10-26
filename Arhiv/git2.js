@@ -17,7 +17,7 @@ git remote add origin https://github.com/sasha-is-permi/admin-panel
 // Посылаем файлы проекта на github
 // В следующий раз можно посылать файлы более простой командой:
 // git push
-git push -u origin master
+
 
 // Повторно- если не выходили из visual studio
 git add -A
