@@ -2,18 +2,22 @@
    <div>
       <section >
         <div class="container mt-3">   
-            <div class="block-shadow">         
-            <table>
-                  
-                <div class="head-calendar">
-                    <div class="arrow arrow-left">
+            <div class="block-shadow">    
+
+
+            <div class="head-calendar">
+               <div class="arrow arrow-left">
                         <p> &lsaquo; </p>
                     </div>
-                    <h3>header2</h3>
+                    <h3>{{ month + " " + year}}</h3>
                     <div class="arrow arrow-right">
                         <p> &rsaquo; </p>
                     </div>
                 </div>
+
+            <table>
+                  
+    
             
             
                     
@@ -120,7 +124,8 @@ export default {
        year:"",
        day:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
        months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"],
-       header2:  "2021"
+       header:"111"
+    
 
     }
   },
@@ -187,7 +192,7 @@ getMonthMethod(monthNumber){
 table {
     border: 1px solid #eceff2;
     border-top: none;
-    width: 100%;
+     width: 100%;
     table-layout: fixed;
     text-align: center;
     padding: 30px;
@@ -210,9 +215,10 @@ td {
     border-left: 1px solid #eceff2;
     border-right: 1px solid #eceff2;
     padding: 25px;
-    justify-content: center;
+    justify-content: space-between;
     display: flex;
     padding-bottom: 0;
+   width: 100%;
 }
 .arrow p {
     cursor: pointer;
