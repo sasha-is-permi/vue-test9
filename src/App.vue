@@ -1,26 +1,19 @@
+
+
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Calendar/>   <!-- Используем компонент "Календарь" -->
 </template>
 
+
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Calendar from './components/Calendar.vue'    // Импортируем компонент "Календарь"
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+   Calendar  // Описание используемых компонентов: "Календарь"
   }
 }
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

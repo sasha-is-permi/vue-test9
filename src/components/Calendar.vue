@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    <!--Наши стили-->
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-</head>
-<body>
-    <section>
+<template>
+      <section>
         <div class="container mt-3">   
             <div class="block-shadow">         
             <table>
-                
                 
                 <div class="head-calendar">
                     <div class="arrow arrow-left">
@@ -28,6 +13,7 @@
                         <p> &rsaquo; </p>
                     </div>
                 </div>
+            
             
                     
                 
@@ -79,7 +65,7 @@
                 <tr>
                     <td>29</td>
                     <td>30</td>
-                    <td class="bg-light"><div class="month-new"><p>jul</p>1  </div></td>
+                    <td class="bg-light"><div class="month-new"><p>jul</p>1 </div></td>
                     <td class="bg-light">2</td>
                     <td class="bg-light">3</td>
                     <td class="bg-light">4</td>
@@ -96,13 +82,89 @@
                 </tr>
             
             </table>
-            </div>
-
-
-
-           
+            </div>           
            
         </div>
     </section>
-</body>
-</html>
+
+
+</template>
+
+<script>
+export default {
+  
+}
+</script>
+
+
+
+
+<!-- Стили только для этого файла (scoped) -->
+
+<style scoped lang="scss">
+
+.block-shadow {
+    box-shadow: 0 4px 4px rgba(148, 113, 113, 0.2);
+    width: 50%; 
+}
+table {
+    border: 1px solid #eceff2;
+    border-top: none;
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+    padding: 30px;
+}
+tr, th, td {
+    padding: 15px;
+}
+
+th {
+    padding-top: 0;
+    color: #D1D1D2;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+td {
+    color: grey;
+}
+.head-calendar {
+    border-top: 1px solid #eceff2;
+    border-left: 1px solid #eceff2;
+    border-right: 1px solid #eceff2;
+    padding: 25px;
+    justify-content: space-between;
+    display: flex;
+    padding-bottom: 0;
+}
+.arrow p {
+    cursor: pointer;
+    color: grey;
+    font-size: 30px;
+}
+.calendar {
+    padding-top: 0;
+    border-bottom: 1px solid #eceff2;;
+}
+h3 {
+    color:grey;
+    font-weight: 400;
+}
+
+.month p {
+    color: rgba(148, 113, 113, 0.2);
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 0;
+    margin-top: -20px;
+}
+.month-new p {
+    text-transform: uppercase;
+    margin-top: -20px;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+
+
+</style>
