@@ -4,100 +4,31 @@
         <div class="container mt-3">   
             <div class="block-shadow">    
 
-
+            <!-- Вывод заголовка:  месяц и год --> 
             <div class="head-calendar">
                <div class="arrow arrow-left">
-                        <p> &lsaquo; </p>
+                     <p @click="back">&lsaquo;</p>   
                     </div>
-                    <h3>{{ month + " " + year}}</h3>
+                    <h3>{{ header }}</h3>
                     <div class="arrow arrow-right">
-                        <p> &rsaquo; </p>
+                        <p @click="next"> &rsaquo; </p>
                     </div>
                 </div>
 
             <table>
                   
-    
-            
-            
-                    
+           <!-- Вывод дней недели в заголовке -->       
+           <tr class="calendar" >
+				<th v-for="d in days" :key="d">{{d}}</th>
+			</tr>
                 
-                <tr class="calendar">
-                    <th>mon</th>
-                    <th>tue</th>
-                    <th>wed</th>
-                    <th>thu</th>
-                    <th>fri</th>
-                    <th>sat</th>
-                    <th>sun</th>
-                </tr>
-                	
-			     
+ 
+      <!--
+     <tr v-for="week in calendar()">					   
+				<td v-for="(day, index) in week" :style="{'color': day.weekend, 'background-color': day.current}"> {{ day.index }} </td>
+  	</tr>	
+      -->
 
-
-
-
-
-
-
-
-
-
-                <tr>
-                    <td><div class="month"><p>jun</p></div>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td>7</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>9</td>
-                    <td>10</td>
-                    <td>11</td>
-                    <td>12</td>
-                    <td>13</td>
-                    <td>14</td>
-                </tr>
-                <tr>
-                    <td>15</td>
-                    <td>16</td>
-                    <td>17</td>
-                    <td>18</td>
-                    <td>19</td>
-                    <td>20</td>
-                    <td>21</td>
-                </tr>
-                <tr>
-                    <td>22</td>
-                    <td>23</td>
-                    <td>24</td>
-                    <td>25</td>
-                    <td>26</td>
-                    <td>27</td>
-                    <td>28</td>
-                </tr>
-                <tr>
-                    <td>29</td>
-                    <td>30</td>
-                    <td class="bg-light"><div class="month-new"><p>jul</p>1 </div></td>
-                    <td class="bg-light">2</td>
-                    <td class="bg-light">3</td>
-                    <td class="bg-light">4</td>
-                    <td class="bg-light">5</td>
-                </tr>
-                <tr>
-                    <td class="bg-light">6</td>
-                    <td class="bg-light">7</td>
-                    <td class="bg-light">8</td>
-                    <td class="bg-light">9</td>
-                    <td class="bg-light">10</td>
-                    <td class="bg-light">11</td>
-                    <td class="bg-light">12</td>
-                </tr>
-            
             </table>
             </div>           
            
@@ -118,23 +49,80 @@
 export default {
   data(){
     return{
-       date: {},
        day:"",
        month:"",
-       year:"",
-       day:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
-       months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"],
-       header:"111"
+       monthNumber:0,
+       year:2021,
+       days:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
+       months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"]
+     
     
 
     }
   },
   methods: {
-      
+/*
+ calendar: function(){
+			var days = [];
+			var week = 0;
+			days[week] = [];
+			var dlast = new Date(this.year, this.month + 1, 0).getDate();
+                for (let i = 1; i <= dlast; i++) {
+                    if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
+						a = {index:i};
+                        days[week].push(a);
+						if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) { a.current = '#747ae6'};
+						if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) { a.weekend = '#ff0000'};
+						}
+                     else {
+                        week++;
+						
+                        days[week] = [];
+						a = {index:i};
+                        days[week].push(a);
+						if ((i == new Date().getDate()) && (this.year == new Date().getFullYear()) && (this.month == new Date().getMonth())) { a.current = '#747ae6'};
+						if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) { a.weekend = '#ff0000'};
+						}
+                    }
+
+				if (days[0].length > 0) {
+					for (let i = days[0].length; i < 7; i++) {
+						days[0].unshift('');
+						
+					}
+				}
+				this.dayChange;
+				//console.log(days);
+				return days;
+			}
+*/
   // Переход на месяц раньше
-  back(){},
+  back(){
+       this.monthNumber--;
+       if (this.monthNumber < 0) {
+       this.monthNumber = 12;
+       this.monthNumber--;
+       this.year--;
+                    }
+       this.month = this.getMonthMethod(this.monthNumber)
+
+  },
   // Переход на месяц позже
-  next(){},
+  next(){
+       this.monthNumber++;
+           if (this.monthNumber > 11) {
+           this.monthNumber = -1;
+           this.monthNumber++;
+           this.year++;
+                    }
+       this.month = this.getMonthMethod(this.monthNumber)            
+  },
+  computed:{
+   header(){
+     return   this.month + " " + this.year
+   }
+ 
+  },
 
 // Получение из  массива месяцев this.mothhs наименования месяца в виде строки
 getMonthMethod(monthNumber){   
@@ -144,7 +132,7 @@ getMonthMethod(monthNumber){
 
   },
   computed: {
-     header1(){
+     header(){
        return this.month + " " + this.year
      }
 
@@ -156,21 +144,12 @@ getMonthMethod(monthNumber){
     // Он вызывается до построения DOM-дерева
     let date =  new Date()              // получаем текущую дату
 
-    // Используем локальные переменные для быстрой работы с данными
-    let day   = date.getDate()           // используем стандартный метод для получения дня месяца   
+    this.day   = date.getDate()           // используем стандартный метод для получения дня месяца   
 
-    let monthNumber = date.getMonth()   // номер просматриваемого месяца 0-11 
-    let month = this.getMonthMethod(monthNumber)    // используем собственный метод для получение наименования месяца
-    let year  = date.getFullYear()       // используем стандартный метод для получения года
+    this.monthNumber = date.getMonth()   // номер просматриваемого месяца 0-11 
+    this.month = this.getMonthMethod(this.monthNumber)    // используем собственный метод для получение наименования месяца
+    this.year  = +date.getFullYear()       // используем стандартный метод для получения года
   
-
-    // Переносим данные из локальных переменных в переменные из объекта data
-    // День, месяц, год на календаре (могут отличаться от текущих при пролистывании календаря )  
-    this.day = day
-    this.month = month
-    this.year  = year   
-
-
   } 
   
 }
