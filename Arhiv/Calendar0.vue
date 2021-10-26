@@ -1,15 +1,14 @@
 <template>
-   <div>
       <section >
         <div class="container mt-3">   
             <div class="block-shadow">         
             <table>
-                  
+                
                 <div class="head-calendar">
                     <div class="arrow arrow-left">
                         <p> &lsaquo; </p>
                     </div>
-                    <h3>header2</h3>
+                    <h3>June 2017</h3>
                     <div class="arrow arrow-right">
                         <p> &rsaquo; </p>
                     </div>
@@ -27,18 +26,6 @@
                     <th>sat</th>
                     <th>sun</th>
                 </tr>
-                	
-			     
-
-
-
-
-
-
-
-
-
-
                 <tr>
                     <td><div class="month"><p>jun</p></div>1</td>
                     <td>2</td>
@@ -100,7 +87,7 @@
         </div>
     </section>
 
-   </div>
+
 </template>
 
 <script>
@@ -109,7 +96,11 @@
 //     day:""     просматриваемый день
 //     month:"",  просматриваеимый месяц
 //     year:"",   просматриваемый год 
-
+//     currentDay   сегодняшний день
+//     currentMonth сегодняшний месяц 
+//     currentYear  сегодняшний год
+//     shortMonth   короткое название месяца для отображение в ячейке календаря (над 1-м числом месяца)
+//     nextShortMonth: короткое название будущего месяца для отображение в ячейке календаря (над 1-м числом месяца)
 
 export default {
   data(){
@@ -118,30 +109,42 @@ export default {
        day:"",
        month:"",
        year:"",
-       day:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
-       months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"],
-       header2:  "2021"
-
+       currentDay:"",
+       currentMonth:"",
+       currentYear:"",
+       shortMonth:"",
+       nextShortMonth:""
     }
   },
   methods: {
-      
-  // Переход на месяц раньше
-  back(){},
-  // Переход на месяц позже
-  next(){},
 
-// Получение из  массива месяцев this.mothhs наименования месяца в виде строки
+// Получение из даты наименование месяца в виде строки
 getMonthMethod(monthNumber){   
-   let nameMonth = this.months[monthNumber];
-   return  nameMonth
-   }
+   let months = ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"];
+   return  months[monthNumber]; 
+   },
 
-  },
-  computed: {
-     header1(){
-       return this.month + " " + this.year
-     }
+getMonthMethod(date){   
+   let month = date.getMonth()  // номер просматриваемого месяца 0-11   
+   let months = ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"];
+   return  months[month]; // 
+   },
+
+getShortMonthMethod(date){   
+   let month = date.getMonth()  // номер просматриваемого месяца 0-11   
+   let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+   return  months[month]; // 
+   },
+
+ // Получение последнего числа месяца 
+ // Обычно даты начинаются с 1, но технически возможно передать любое число, и дата сама себя поправит.
+ // Так что если передать 0, то это значение будет соответствовать «один день перед первым числом месяца», 
+ // другими словами: «последнее число прошлого месяца»
+getLastDayOfMonth(year, month) {
+  let date = new Date(year, month + 1, 0);
+  return date.getDate();
+}   
+   
 
 
   },
@@ -151,12 +154,16 @@ getMonthMethod(monthNumber){
     // Он вызывается до построения DOM-дерева
     let date =  new Date()              // получаем текущую дату
 
+
     // Используем локальные переменные для быстрой работы с данными
-    let day   = date.getDate()           // используем стандартный метод для получения дня месяца   
+    let day   = getDate(date)           // используем стандартный метод для получения дня месяца   
 
     let monthNumber = date.getMonth()   // номер просматриваемого месяца 0-11 
-    let month = this.getMonthMethod(monthNumber)    // используем собственный метод для получение наименования месяца
-    let year  = date.getFullYear()       // используем стандартный метод для получения года
+    let month = getMonthMethod(monthNumber)    // используем собственный метод для получение наименования месяца
+    let shortMonth = getShortMonthMethod(monthNumber)    // используем собственный метод для получение сокращенного наименования месяца (в ячейке календаря отображается)
+    let nextShortMonth = getShortMonthMethod(monthNumber+1)    // используем собственный метод для получение сокращенного наименования следующего месяца  (в ячейке календаря отображается)
+
+    let year  = getFullYear(date)       // используем стандартный метод для получения года
   
 
     // Переносим данные из локальных переменных в переменные из объекта data
@@ -164,6 +171,14 @@ getMonthMethod(monthNumber){
     this.day = day
     this.month = month
     this.year  = year   
+
+    //  Текущие  день, месяц, год на календаре
+    this.currentDay = day
+    this.currentMonth= month
+    this.currentYear = year
+   
+    this.shortMonth = shortMonth  // короткое название текущего просматриваемого месяца
+    this.nextShortMonth = nextShortMonth  // короткое название следующего просматриваемого месяца
 
 
   } 
@@ -176,7 +191,7 @@ getMonthMethod(monthNumber){
 
 <!-- Стили только для этого файла (scoped) -->
 
-<style scoped >
+<style scoped lang="scss">
 
 
 
@@ -210,7 +225,7 @@ td {
     border-left: 1px solid #eceff2;
     border-right: 1px solid #eceff2;
     padding: 25px;
-    justify-content: center;
+    justify-content: space-between;
     display: flex;
     padding-bottom: 0;
 }
