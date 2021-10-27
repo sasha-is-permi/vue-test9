@@ -23,11 +23,11 @@
 			</tr>
                 
  
-      <!--
-     <tr v-for="week in calendar()">					   
-				<td v-for="(day, index) in week" :style="{'color': day.weekend, 'background-color': day.current}"> {{ day.index }} </td>
+            <!-- Вывод данных в календарь --> 
+     <tr v-for="week in calendar()" :key="week">					   
+				<td v-for="day in week" :key="day"   > {{ day.index }} </td>
   	</tr>	
-      -->
+    
 
             </table>
             </div>           
@@ -61,27 +61,25 @@ export default {
     }
   },
   methods: {
-/*
- calendar: function(){
-			var days = [];
-			var week = 0;
+
+   // Формирование массива для последующего вывода дней в календарь
+   calendar() {
+			let days = [];
+			let week = 0;
 			days[week] = [];
-			var dlast = new Date(this.year, this.month + 1, 0).getDate();
+			let dlast = new Date(this.year, this.monthNumber + 1, 0).getDate();
                 for (let i = 1; i <= dlast; i++) {
-                    if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
-						a = {index:i};
-                        days[week].push(a);
-						if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) { a.current = '#747ae6'};
-						if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) { a.weekend = '#ff0000'};
+                    if (new Date(this.year, this.monthNumber, i).getDay() != 1) {
+						let a = {index:i};
+                        days[week].push(a);					
 						}
                      else {
                         week++;
 						
                         days[week] = [];
-						a = {index:i};
+						let a = {index:i};
                         days[week].push(a);
-						if ((i == new Date().getDate()) && (this.year == new Date().getFullYear()) && (this.month == new Date().getMonth())) { a.current = '#747ae6'};
-						if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) { a.weekend = '#ff0000'};
+						
 						}
                     }
 
@@ -91,11 +89,12 @@ export default {
 						
 					}
 				}
-				this.dayChange;
-				//console.log(days);
+				  
+				
 				return days;
-			}
-*/
+			},    
+
+
   // Переход на месяц раньше
   back(){
        this.monthNumber--;
@@ -120,7 +119,9 @@ export default {
   computed:{
    header(){
      return   this.month + " " + this.year
-   }
+   },
+   
+
  
   },
 
