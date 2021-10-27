@@ -25,7 +25,7 @@
  
             <!-- Вывод данных в календарь --> 
      <tr v-for="week in calendar()" :key="week">					   
-				<td v-for="day in week" :key="day"   > {{ day.index }} </td>
+				<td v-for="day in week" :key="day"   > {{ day }} </td>
   	</tr>	
     
 
@@ -64,33 +64,45 @@ export default {
 
    // Формирование массива для последующего вывода дней в календарь
    calendar() {
-			let days = [];
-			let week = 0;
-			days[week] = [];
+         
+
+			let days = []; // массив дней        
+			let week = 0;  // номер недели
+			days[week] = [];             
+            // days[0] - первая неделя, содержит элементы
+
+           // Получение последнего дня в месяце
+           // Обычно даты начинаются с 1, но технически возможно передать любое число, и дата сама себя поправит
+           // Так что если передать 0, то это значение будет соответствовать «один день перед первым числом месяца», 
+           // другими словами: «последнее число прошлого месяца»
+           // Поскольку передаем следующий месяц- this.monthNumber + 1 - возращается последний день текущего месяца
 			let dlast = new Date(this.year, this.monthNumber + 1, 0).getDate();
+                 
+                // Цикл по дням- с первого дня месяца до последнего 
                 for (let i = 1; i <= dlast; i++) {
+
+                   // getDay возвращает целое число, обозначающее день недели: 1 - понедельник             
                     if (new Date(this.year, this.monthNumber, i).getDay() != 1) {
-						let a = {index:i};
-                        days[week].push(a);					
+						days[week].push(i);					
 						}
                      else {
-                        week++;
-						
+                        week++;						
                         days[week] = [];
-						let a = {index:i};
-                        days[week].push(a);
+
+                        days[week].push(i);
 						
 						}
                     }
-
+                 
 				if (days[0].length > 0) {
 					for (let i = days[0].length; i < 7; i++) {
-						days[0].unshift('');
-						
+						days[0].unshift('');						
 					}
 				}
 				  
-				
+                console.table(days);
+                
+                // Возвращаем массив дней месяца
 				return days;
 			},    
 
@@ -98,25 +110,30 @@ export default {
   // Переход на месяц раньше
   back(){
        this.monthNumber--;
+       // Если получается месяц меньше 0- просматривать будем предыдущий год
        if (this.monthNumber < 0) {
        this.monthNumber = 12;
        this.monthNumber--;
        this.year--;
                     }
+       // Получаем название месяца из его номера            
        this.month = this.getMonthMethod(this.monthNumber)
 
   },
   // Переход на месяц позже
   next(){
+         // Если получается месяц > 11- просматривать будем будущий год
        this.monthNumber++;
            if (this.monthNumber > 11) {
            this.monthNumber = -1;
            this.monthNumber++;
            this.year++;
                     }
+        // Получаем название месяца из его номера                 
        this.month = this.getMonthMethod(this.monthNumber)            
   },
   computed:{
+      // Выводим название месяца и год в заголовке календаря
    header(){
      return   this.month + " " + this.year
    },
