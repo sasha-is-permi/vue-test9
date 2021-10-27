@@ -163,7 +163,9 @@ getMonthMethod(monthNumber){
 
 <style scoped >
 
-
+.container{
+    min-width: 800px;
+}
 
 .block-shadow {
     box-shadow: 0 4px 4px rgba(148, 113, 113, 0.2);
