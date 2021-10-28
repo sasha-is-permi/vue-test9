@@ -29,7 +29,7 @@
             <td v-for="day in week" :key="day"   >
 
             <!-- Если 1-е число месяца- подписываем начало месяца сверху -->
-            <div class="month" v-if="day===1"><p>jun</p></div>                  
+            <div class="month" v-if="day===1"><p>{{month}}</p></div>                  
                     {{ day }}
             </td>
 
