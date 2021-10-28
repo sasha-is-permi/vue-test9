@@ -30,9 +30,7 @@
 
             <!-- Если 1-е число месяца- подписываем начало месяца сверху -->
             <div class="month" v-if="day===1"><p>jun</p></div>                  
-            
                     {{ day }}
-           
             </td>
 
   	</tr>	
@@ -49,23 +47,47 @@
 
 <script>
 
-//     date: {},  просматриваемая дата
 //     day:""     просматриваемый день
-//     month:"",  просматриваеимый месяц
+//     month:"",  просматриваемый месяц
+//     monthNumber:0, номер просматреваемого месяца 
 //     year:"",   просматриваемый год 
 
+//     previousDay:""     дни в предыдущем месяце
+//     previousMonth:"",  предыдущий месяц
+//     previousMonthNumber:0, номер предыдущего месяца 
+//     previousYear:"",   предыдущий год
+
+//     nextDay:""         дни в следующем месяце
+//     nextMonth:"",      следующий месяц 
+//     nextMonthNumber:0, номер следующего месяца
+//     nextYear:"",       следующий год
+
+
+//     Массивы дней недели и месяцев: 
+//     days:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
+//     months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"],
 
 export default {
   data(){
     return{
+
        day:"",
        month:"",
        monthNumber:0,
        year:2021,
+
+       previousDay:"", 
+       previousMonth:"",
+       previousMonthNumber:0, 
+       previousYear:"",
+
+       nextDay:"",
+       nextMonth:"",
+       nextMonthNumber:0,      
+       nextYear:"",
+
        days:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
-       months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"]
-     
-    
+       months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"],
 
     }
   },
