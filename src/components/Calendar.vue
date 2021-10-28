@@ -81,23 +81,41 @@ export default {
 
       calendar() {    
 
-        let days = []; // массив дней в календаре  на 5 недель (текущий выбранный месяц.
-                   // Может также включать конец прошлого месяца и начало будущего)     
+      
 
         // Календарь на текущий выбранный месяц.      
         let daysCurrent =   this.monthCalendar(this.monthNumber,this.year)
 
         
         // Календарь на прошлый месяц.      
-        let daysPrevious =   this.monthCalendar(this.monthNumber,this.year)
+        let monthPreviousNumber =  this.monthNumber-1;
+        let yearPrevious =  this.year;
+         // Если получается месяц меньше 0- просматривать будем предыдущий год
+         if (monthPreviousNumber < 0) {
+         monthPreviousNumber = 11; // месяцы в javascript нумеруются с 0-11
+         yearPrevious--;
+                    }
 
+        let daysPrevious =   this.monthCalendar(monthPreviousNumber,yearPrevious)
 
-        // Календарь на будущий месяц.      
-        let daysNext =   this.monthCalendar(this.monthNumber,this.year)
+ 
+        // Календарь на будущий месяц.       
+        let monthNextNumber =  this.monthNumber+1;
+        let yearNext =  this.year;
+         // Если получается месяц > 11- просматривать будем будущий год
+         if (monthNextNumber > 11) {
+         this.monthNumber = 0; // месяцы в javascript нумеруются с 0-11
+         yearNext++;
+                    }
+
+        let daysNext =   this.monthCalendar(monthNextNumber,yearNext)
 
         // days и daysCurrent ссылаются друг на друга
         days = daysCurrent;
 
+        // Формируем массив дней в календаре  на 5 недель (текущий выбранный месяц.
+        // Может также включать конец прошлого месяца и начало будущего) 
+        let days = this.calendarCalculator(daysPrevious,daysCurrent,daysNext);    
 
         return days;
 			},    
@@ -138,31 +156,35 @@ export default {
 						}
                     }
                  
-                // Анализируем полученный массив. Если он не пустой.
-				if (days[0].length > 0) {
-                    // Смотрим- сколько дней в первой неделе. Если скажем 3- добавим 4 дня с номерами "" 
-                    // поскольку они принадлежат прошлому месяцу, а мы выводим текущий
-                    // для будущего месяца такое делать не обязательно
-					for (let i = days[0].length; i < 7; i++) {
-						days[0].unshift('');						
-					}
-				}
+                console.table(days) 
 
                 return days;
 				  
 
       },
 
+        calendarCalculator(daysPrevious,daysCurrent,daysNext){
 
+           // Анализируем полученный массив. Если он не пустой.
+				if (daysCurrent.length > 0) {
+                    // Смотрим- сколько дней в первой неделе. Если скажем 3- добавим 4 дня с номерами "" 
+                    // поскольку они принадлежат прошлому месяцу, а мы выводим текущий
+                    // для будущего месяца такое делать не обязательно
+					for (let i = daysCurrent[0].length; i < 7; i++) {
+						daysCurrent[0].unshift('');						
+					}
+				}
+               
+               return daysCurrent;
 
+        },
 
   // Переход на месяц раньше
   back(){
        this.monthNumber--;
        // Если получается месяц меньше 0- просматривать будем предыдущий год
        if (this.monthNumber < 0) {
-       this.monthNumber = 12;
-       this.monthNumber--;
+       this.monthNumber = 11; // месяцы в javascript нумеруются с 0-11
        this.year--;
                     }
        // Получаем название месяца из его номера            
@@ -181,15 +203,7 @@ export default {
         // Получаем название месяца из его номера                 
        this.month = this.getMonthMethod(this.monthNumber)            
   },
-  computed:{
-      // Выводим название месяца и год в заголовке календаря
-   header(){
-     return   this.month + " " + this.year
-   },
-   
-
  
-  },
 
 // Получение из  массива месяцев this.mothhs наименования месяца в виде строки
 getMonthMethod(monthNumber){   
@@ -198,13 +212,15 @@ getMonthMethod(monthNumber){
    }
 
   },
-  computed: {
-     header(){
-       return this.month + " " + this.year
-     }
 
+   computed:{
+      // Выводим название месяца и год в заголовке календаря
+   header(){
+     return   this.month + " " + this.year
+   },  
 
-  },
+ 
+            },
 
   created(){
     // Используем хук created на этапе создаения приложения- считываем текущую дату
