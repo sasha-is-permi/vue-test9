@@ -19,7 +19,7 @@
                   
            <!-- Вывод дней недели в заголовке -->       
            <tr class="calendar" >
-				<th v-for="d in days" :key="d">{{d}}</th>
+				<th v-for="d in daysOfWeek" :key="d">{{d}}</th>
 			</tr>
                 
  
@@ -47,6 +47,8 @@
 
 <script>
 
+//     days = []; // массив дней в календаре (включает все 3 месяца)  
+
 //     day:""     просматриваемый день
 //     month:"",  просматриваемый месяц
 //     monthNumber:0, номер просматреваемого месяца 
@@ -64,13 +66,14 @@
 
 
 //     Массивы дней недели и месяцев: 
-//     days:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
+//     daysOfWeek:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
 //     months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"],
 
 export default {
   data(){
     return{
-
+        
+       days: [],    
        day:"",
        month:"",
        monthNumber:0,
@@ -86,66 +89,72 @@ export default {
        nextMonthNumber:0,      
        nextYear:"",
 
-       days:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
+       daysOfWeek:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
        months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"],
 
     }
   },
   methods: {
 
-   // Формирование массива для последующего вывода дней в календарь
-   calendar() {
-         
+   // Формирование общего календаря на 5 недель (текущий выбранный месяц.
+   // Может также включать конец прошлого месяца и начало будущего)
 
-			let days = []; // массив дней        
+      calendar() {    
+
+        // Календарь на текущий месяц. Меняет массив this.days      
+        this.monthCalendar(this.monthNumber,this.year)
+
+        return this.days;
+			},    
+
+      monthCalendar(monthNumber,year){
+			    
 			let week = 0;  // номер недели
-			days[week] = [];             
-            // days[0] - первая неделя, содержит элементы
+			this.days[week] = [];             
+            // this.days[0] - первая неделя, содержит элементы
 
            // Получение последнего дня в месяце
            // Обычно даты начинаются с 1, но технически возможно передать любое число, и дата сама себя поправит
            // Так что если передать 0, то это значение будет соответствовать «один день перед первым числом месяца», 
            // другими словами: «последнее число прошлого месяца»
            // Поскольку передаем следующий месяц- this.monthNumber + 1 - возращается последний день текущего месяца
-			let dlast = new Date(this.year, this.monthNumber + 1, 0).getDate();
+			let dlast = new Date(year, monthNumber + 1, 0).getDate();
                  
                 // Цикл по дням- с первого дня месяца до последнего 
                 for (let i = 1; i <= dlast; i++) {
 
                    // getDay возвращает целое число, обозначающее день недели: 1 - понедельник             
-                    if (new Date(this.year, this.monthNumber, i).getDay() != 1) {
-                        // Если день недели не понедельник- заносим номер дня в массив для текущей недели days[week]
+                    if (new Date(year, monthNumber, i).getDay() != 1) {
+                        // Если день недели не понедельник- заносим номер дня в массив для текущей недели this.days[week]
                         // (получается двумерный массив)
-						days[week].push(i);					
+						this.days[week].push(i);					
 						}
                      else {
-                        // Если день недели  понедельник- начинаем новую неделю в двумерном массиве days[week]
+                        // Если день недели  понедельник- начинаем новую неделю в двумерном массиве this.days[week]
                         // (получается двумерный массив)   
                         week++;
                         // создаем новый элемент массива						
-                        days[week] = [];
+                        this.days[week] = [];
                         //  заносим номер дня в массив
-                        days[week].push(i);
+                        this.days[week].push(i);
 						
 						}
                     }
                  
                 // Анализируем полученный массив. Если он не пустой.
-				if (days[0].length > 0) {
+				if (this.days[0].length > 0) {
                     // Смотрим- сколько дней в первой неделе. Если скажем 3- добавим 4 дня с номерами "" 
                     // поскольку они принадлежат прошлому месяцу, а мы выводим текущий
                     // для будущего месяца такое делать не обязательно
-					for (let i = days[0].length; i < 7; i++) {
-						days[0].unshift('');						
+					for (let i = this.days[0].length; i < 7; i++) {
+						this.days[0].unshift('');						
 					}
 				}
 				  
-                // Выводим в консоль таблицу дней  
-                console.table(days);
-                
-                // Возвращаем массив дней месяца
-				return days;
-			},    
+
+      },
+
+
 
 
   // Переход на месяц раньше
