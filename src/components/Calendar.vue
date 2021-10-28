@@ -147,6 +147,8 @@ export default {
 						days[0].unshift('');						
 					}
 				}
+
+                return days;
 				  
 
       },
