@@ -1,0 +1,60 @@
+.block-shadow {
+    box-shadow: 0 4px 4px rgba(148, 113, 113, 0.2);
+    width: 50%; 
+}
+table {
+    border: 1px solid #eceff2;
+    border-top: none;
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+    padding: 30px;
+}
+tr, th, td {
+    padding: 15px;
+}
+
+th {
+    padding-top: 0;
+    color: #3e3ecf;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+td {
+    color: grey;
+}
+.head-calendar {
+    border-top: 1px solid #eceff2;
+    border-left: 1px solid #eceff2;
+    border-right: 1px solid #eceff2;
+    padding: 25px;
+    justify-content: space-between;
+    display: flex;
+    padding-bottom: 0;
+}
+.arrow p {
+    cursor: pointer;
+    color: grey;
+    font-size: 30px;
+}
+.calendar {
+    padding-top: 0;
+    border-bottom: 1px solid #eceff2;;
+}
+h3 {
+    color:grey;
+    font-weight: 400;
+}
+
+.month p {
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 0;
+    margin-top: -10px;
+}
+.month-new p {
+    text-transform: uppercase;
+    margin-top: -10px;
+    margin-bottom: 0;
+    font-size: 12px;
+}
