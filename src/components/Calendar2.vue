@@ -114,12 +114,14 @@ export default {
         let yearNext =  this.year;
          // Если получается месяц > 11- просматривать будем будущий год
          if (monthNextNumber > 11) {
-         monthNextNumber = 0; // месяцы в javascript нумеруются с 0-11
+         this.monthNumber = 0; // месяцы в javascript нумеруются с 0-11
          yearNext++;
                     }
 
         let daysNext =   this.monthCalendar(monthNextNumber,yearNext,"next")
 
+        // days и daysCurrent ссылаются друг на друга
+        days = daysCurrent;
 
         // Формируем массив дней в календаре  на 5 недель (текущий выбранный месяц.
         // Может также включать конец прошлого месяца и начало будущего) 
