@@ -129,6 +129,7 @@ export default {
         
 			},    
 
+      // Расчет массива дней для конкретного месяца 
       monthCalendar(monthNumber,year,statusMonth){
             
             // Сокращенное наименование месяца
@@ -176,7 +177,8 @@ export default {
 				  
 
    
-
+        // Соединяем предыдущий месяц, нынешний и будущий.
+        // Должен получиться календарь с 6-ти строками (если не хватает- добавляем)
         calendarCalculator(daysPrevious,daysCurrent,daysNext){
              
 
@@ -193,15 +195,16 @@ export default {
            
               console.log("daysNext",daysNext)
 
-              // Анализируем полученный массив. Если он не пустой.
-				if (daysCurrent.length > 0) {
+       		
 
-               
-                    if (daysCurrent[0].length !=0) {
+                    // Если первая неделя месяца (1 число) не начинается с понедельника- можно добавить данные из прошлого месяца   
+                    if (daysCurrent[0].length !==7) {
                     // Смотрим- сколько дней в первой неделе. Если скажем 3- добавим 4 дня с днями  
-                    // из прошлого месяца
+                    // из прошлого месяца. Берем данные из 5-й строчки (4 индекс) прошлого месяца. Ситуацию февраля (3 индекс) исключили выше
+                    // (если февраль прошлый- 28 дней- он ровно без остатка будет и новый месяц начнется с 1 числа ) 
                     let previousDay= daysPrevious[4][daysPrevious[4].length-1].value; // последний день прошлого месяца
-					for (let i = daysCurrent[0].length; i < 7; i++) {                        
+					for (let i = daysCurrent[0].length; i < 7; i++) {        
+                        // добавляем данные в начала массива                
 						daysCurrent[0].unshift({value:previousDay,month:monthNamePrevious,status:monthStatusPrevious});		
                         previousDay--;				
 					}
@@ -215,10 +218,11 @@ export default {
                     // Смотрим- сколько дней на пятой неделе (индекс nextWeek=4 - начинается с 0). Если скажем 3- добавим 4 дня с днями  
                     // из будущего месяца
                     nextWeek=4;
-                    if (daysCurrent[nextWeek]=== undefined) {daysCurrent[nextWeek]=[]}	  
+                    if (daysCurrent[nextWeek]== undefined) {daysCurrent[nextWeek]=[]}	  
                     let calcDays = 7 - daysCurrent[nextWeek].length +1;
-					for (let i = 1; i< calcDays; i++) {   
-                        nextDay++;                                         
+					for (let i = 1; i< calcDays; i++) {                           
+                        nextDay++;         
+                        // добавляем данные в конец массива                                         
 					    daysCurrent[nextWeek].push({value:nextDay,month:monthNameNext,status:monthStatusNext});		
                     		
 					}
@@ -227,10 +231,11 @@ export default {
                     // Смотрим- сколько дней на шестой неделе (индекс nextWeek=5 - начинается с 0). Если скажем 3- добавим 4 дня с днями  
                     // из будущего месяца
                     nextWeek=5;
-                    if (daysCurrent[nextWeek]=== undefined) {daysCurrent[nextWeek]=[]}	 
+                    if (daysCurrent[nextWeek]== undefined) {daysCurrent[nextWeek]=[]}	 
                     calcDays = 7 - daysCurrent[nextWeek].length +1;
 					for (let i = 1; i< calcDays; i++) {              
-                        nextDay++;                       
+                        nextDay++;    
+                        // добавляем данные в конец массива                   
 					    daysCurrent[nextWeek].push({value:nextDay,month:monthNameNext,status:monthStatusNext});	                      				
 					}
                      
@@ -238,7 +243,7 @@ export default {
 
 
                    
-                      }
+           
 
 
                            
