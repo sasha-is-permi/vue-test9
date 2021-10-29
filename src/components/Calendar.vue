@@ -7,11 +7,11 @@
             <!-- Вывод заголовка:  месяц и год --> 
             <div class="head-calendar">
                <div class="arrow arrow-left">
-                     <p @click="back">&lsaquo;</p>   
+                     <button @click="back">&lsaquo;</button>   
                     </div>
                     <h3>{{ header }}</h3>
                     <div class="arrow arrow-right">
-                        <p @click="next"> &rsaquo; </p>
+                        <button @click="next"> &rsaquo; </button>
                     </div>
                 </div>
 
@@ -25,12 +25,14 @@
  
             <!-- Вывод данных в календарь --> 
      <tr v-for="week in calendar()" :key="week">					   
-			
-            <td v-for="day in week" :key="day"   >
+			<!-- Выделяем серым цветом ячейки (класс bg-light bootstrap), чей месяц не текущий 
+            Также выделяем цветом сегодняшнее число -->
+            <td v-for="day in week" :key="day" :class="{'bg-light':day.status!=='current',
+            'today':(day.value===dayCurrent) && (month===monthCurrent) && (year=== yearCurrent) &&(day.status==='current')}"  >
 
             <!-- Если 1-е число месяца- подписываем начало месяца сверху. Берем только первые 3 символа -->
-            <div class="month" v-if="day===1"><p>{{month.substr(0,3)}}</p></div>                  
-                    {{ day }}
+            <div class="month" v-if="day.value===1"><p>{{day.month}}</p></div>                  
+                    {{ day.value }}
             </td>
 
   	</tr>	
@@ -54,6 +56,11 @@
 //     monthNumber:0, номер просматреваемого месяца 
 //     year:"",   просматриваемый год 
 
+//       dayCurrent:"",  сегодняшний день
+//       monthCurrent:"", сегодняшний месяц
+//       monthNumberCurrent:0, сегодняшний номер месяца
+//       yearCurrent:2021, сегодняшний год
+
 
 //     Массивы дней недели и месяцев: 
 //     daysOfWeek:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
@@ -69,6 +76,11 @@ export default {
        monthNumber:0,
        year:2021,
 
+       dayCurrent:"",
+       monthCurrent:"",
+       monthNumberCurrent:0,
+       yearCurrent:2021,
+
        daysOfWeek:["mon","tue", "wed", "thu", "fri", "sat", "sun"],
        months : ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December"],
 
@@ -82,7 +94,7 @@ export default {
       calendar() { 
           
         // Календарь на текущий выбранный месяц.      
-        let daysCurrent =   this.monthCalendar(this.monthNumber,this.year)
+        let daysCurrent =   this.monthCalendar(this.monthNumber,this.year,"current")
 
         
         // Календарь на прошлый месяц.      
@@ -94,7 +106,7 @@ export default {
          yearPrevious--;
                     }
 
-        let daysPrevious =   this.monthCalendar(monthPreviousNumber,yearPrevious)
+        let daysPrevious =   this.monthCalendar(monthPreviousNumber,yearPrevious,"previous")
 
  
         // Календарь на будущий месяц.       
@@ -106,7 +118,7 @@ export default {
          yearNext++;
                     }
 
-        let daysNext =   this.monthCalendar(monthNextNumber,yearNext)
+        let daysNext =   this.monthCalendar(monthNextNumber,yearNext,"next")
 
         // days и daysCurrent ссылаются друг на друга
         days = daysCurrent;
@@ -118,7 +130,10 @@ export default {
         return days;
 			},    
 
-      monthCalendar(monthNumber,year){
+      monthCalendar(monthNumber,year,statusMonth){
+            
+            // Сокращенное наименование месяца
+            let monthName = this.getMonthMethod(monthNumber).substr(0,3)
 
             let days = []; // массив дней в календаре 
 			    
@@ -140,7 +155,8 @@ export default {
                     if (new Date(year, monthNumber, i).getDay() != 1) {
                         // Если день недели не понедельник- заносим номер дня в массив для текущей недели days[week]
                         // (получается двумерный массив)
-						days[week].push(i);					
+                        // Добавляем число, сокращенное наименование месяца и статус- текущий, прошлый, будущий 
+						days[week].push({value:i,month:monthName,status:statusMonth});					
 						}
                      else {
                         // Если день недели  понедельник- начинаем новую неделю в двумерном массиве days[week]
@@ -149,7 +165,7 @@ export default {
                         // создаем новый элемент массива						
                         days[week] = [];
                         //  заносим номер дня в массив
-                        days[week].push(i);
+                        days[week].push({value:i,month:monthName,status:statusMonth});
 						
 						}
                     }
@@ -162,16 +178,38 @@ export default {
       },
 
         calendarCalculator(daysPrevious,daysCurrent,daysNext){
+             
+              // Получаем сокращенное имя прошлого месяца и статус.
+              // Можно взять у 1-го элемента из прошлого месяца
+              let  weekPrevious   = daysPrevious[0] // берем первую неделю прошлого месяца
+              let  monthNamePrevious = weekPrevious[0].month;
+              let  monthStatusPrevious = weekPrevious[0].status;
 
-           // Анализируем полученный массив. Если он не пустой.
+              // Получаем сокращенное имя будущего месяца и статус.
+              // Можно взять у 1-го элемента из будущего месяца
+              let  weekNext   = daysNext[1]
+              let  monthNameNext = weekNext[0].month;
+              let  monthStatusNext =weekNext[0].status;
+
+              console.log("daysPrevious",daysPrevious)
+
+             console.log("daysCurrent",daysCurrent)
+           
+           console.log("daysNext",daysNext)
+
+              // Анализируем полученный массив. Если он не пустой.
 				if (daysCurrent.length > 0) {
+
+               
+                    if (daysCurrent[0].length !=0) {
                     // Смотрим- сколько дней в первой неделе. Если скажем 3- добавим 4 дня с днями  
                     // из прошлого месяца
-                    let previousDay= daysPrevious[4][daysPrevious[4].length-1]; // последний день прошлого месяца
+                    let previousDay= daysPrevious[4][daysPrevious[4].length-1].value; // последний день прошлого месяца
 					for (let i = daysCurrent[0].length; i < 7; i++) {                        
-						daysCurrent[0].unshift(previousDay);		
+						daysCurrent[0].unshift({value:previousDay,month:monthNamePrevious,status:monthStatusPrevious});		
                         previousDay--;				
 					}
+                    }
 				
 
                    // Смотрим- сколько дней в последней неделе. Если скажем 3- добавим 4 дня с днями  
@@ -197,7 +235,7 @@ export default {
 
                     let calcDays = 7 - daysCurrent[nextWeek].length +1;
 					for (let i = 1; i< calcDays; i++) {                        
-						daysCurrent[nextWeek].push(nextDay);		
+						daysCurrent[nextWeek].push({value:nextDay,month:monthNameNext,status:monthStatusNext});		
                         nextDay++;				
 					}
 				
@@ -205,7 +243,7 @@ export default {
 
 
                       console.log('********')
-                      console.table(daysCurrent)
+                      console.log(daysCurrent)
                
                return daysCurrent;
 
@@ -266,6 +304,13 @@ getMonthMethod(monthNumber){
     this.month = this.getMonthMethod(this.monthNumber)    // используем собственный метод для получение наименования месяца
     this.year  = +date.getFullYear()       // используем стандартный метод для получения года
   
+    // Запоминаем сегодняшнюю дату
+    this.dayCurrent= this.day;
+    this.monthCurrent = this.month;
+    this.monthNumberCurrent = this.monthNumber;
+    this.yearCurrent = this.year;
+
+
   } 
   
 }
@@ -280,6 +325,10 @@ getMonthMethod(monthNumber){
 
 .container{
     min-width: 800px;
+}
+
+.today {
+    color: red;
 }
 
 .block-shadow {
