@@ -134,7 +134,7 @@ export default {
       monthCalendar(monthNumber,year,statusMonth){
             
             // Сокращенное наименование месяца
-            let monthName = this.getMonthMethod(monthNumber).substr(0,3)
+            let monthName = "2"//this.getMonthMethod(monthNumber).substr(0,3)
 
             let days = []; // массив дней в календаре 
 			    
@@ -183,15 +183,15 @@ export default {
              
               // Получаем сокращенное имя прошлого месяца и статус.
               // Можно взять у 1-го элемента из прошлого месяца
-              let  weekPrevious   = daysPrevious[0] // берем первую неделю прошлого месяца
-              let  monthNamePrevious = weekPrevious[0].month;
-              let  monthStatusPrevious = weekPrevious[0].status;
+              //let  weekPrevious   = //daysPrevious[0] // берем первую неделю прошлого месяца
+              let  monthNamePrevious ="1"// weekPrevious[0].month;
+              let  monthStatusPrevious = "1"//weekPrevious[0].status;
 
               // Получаем сокращенное имя будущего месяца и статус.
               // Можно взять у 1-го элемента из будущего месяца
-              let  weekNext   =  daysNext[1]
-              let  monthNameNext = weekNext[0].month;
-              let  monthStatusNext = weekNext[0].status;
+             // let  weekNext   = // daysNext[1]
+              let  monthNameNext = "2" //weekNext[0].month;
+              let  monthStatusNext = "2" //weekNext[0].status;
 
               console.log("daysPrevious",daysPrevious)
 
@@ -404,4 +404,3 @@ h3 {
 
 
 </style>
-
