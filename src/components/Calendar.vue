@@ -179,17 +179,13 @@ export default {
 
         calendarCalculator(daysPrevious,daysCurrent,daysNext){
              
-              // Получаем сокращенное имя прошлого месяца и статус.
-              // Можно взять у 1-го элемента из прошлого месяца
-              let  weekPrevious   = daysPrevious[0] // берем первую неделю прошлого месяца
-              let  monthNamePrevious = weekPrevious[0].month;
-              let  monthStatusPrevious = weekPrevious[0].status;
 
-              // Получаем сокращенное имя будущего месяца и статус.
-              // Можно взять у 1-го элемента из будущего месяца
-              let  weekNext   =  daysNext[1]
-              let  monthNameNext = weekNext[0].month;
-              let  monthStatusNext = weekNext[0].status;
+              let  monthNamePrevious = daysPrevious[1][0].month;
+              let  monthStatusPrevious =  "previous"
+
+
+              let  monthNameNext = daysNext[1][0].month;
+              let  monthStatusNext = "next"
 
               console.log("daysPrevious",daysPrevious)
 
@@ -281,7 +277,7 @@ export default {
   },
  
 
-// Получение из  массива месяцев this.moths наименования месяца в виде строки
+// Получение из  массива месяцев this.months наименования месяца в виде строки
 getMonthMethod(monthNumber){   
    let nameMonth = this.months[monthNumber];
    return  nameMonth
