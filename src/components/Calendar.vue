@@ -163,14 +163,14 @@ export default {
                         week++;
                         // создаем новый элемент массива						
                         days[week] = [];
-                        //  заносим номер дня в массив
+                        //  заносим номер дня в массив                        
                         days[week].push({value:i,month:monthName,status:statusMonth});
 						
 						}
                     }
                  
-                console.table(days) 
-
+                if (days[0].length==0) {days.shift()}
+                
                 return days;
       },
 				  
@@ -189,9 +189,9 @@ export default {
 
               console.log("daysPrevious",daysPrevious)
 
-             console.log("daysCurrent",daysCurrent)
+              console.log("daysCurrent",daysCurrent)
            
-           console.log("daysNext",daysNext)
+              console.log("daysNext",daysNext)
 
               // Анализируем полученный массив. Если он не пустой.
 				if (daysCurrent.length > 0) {
@@ -224,8 +224,7 @@ export default {
                     else if (daysCurrent[5]===undefined){ nextWeek=4} 
                     else {nextWeek=5} 
 
-                    console.log(daysCurrent[6])
-
+         
                     // Посчитаем количество дней из следующего месяца, которые надо включать в календарь
                     // добавляем их в конец массива         
 
@@ -238,9 +237,7 @@ export default {
                       }
 
 
-                      console.log('********')
-                      console.log(daysCurrent)
-               
+                           
                return daysCurrent;
 
         },
